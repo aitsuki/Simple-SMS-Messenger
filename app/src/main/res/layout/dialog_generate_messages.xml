@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/activity_margin"
         android:paddingEnd="@dimen/activity_margin">
 
-        <TextView
+        <com.simplemobiletools.commons.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -22,7 +22,7 @@
             android:text="选择需要生成的短信数量"
             tools:ignore="HardcodedText" />
 
-        <TextView
+        <com.simplemobiletools.commons.views.MyTextView
             android:id="@+id/count_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,25 +41,25 @@
             android:max="1000"
             android:progress="10" />
 
-        <TextView
+        <com.simplemobiletools.commons.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Note:"
             android:textStyle="bold" />
 
-        <TextView
+        <com.simplemobiletools.commons.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.生成短信可能比较耗时，请耐心等待"
             android:textSize="12sp" />
 
-        <TextView
+        <com.simplemobiletools.commons.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2.短信生成完毕后，可能无法立即在界面中显示，等待一段时间会自动刷新"
             android:textSize="12sp" />
 
-        <TextView
+        <com.simplemobiletools.commons.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3.生成的短信数量并非如你所愿，距上次生成时间每过1秒只能多生成1条短信。例如1分钟前生成过短信，那么此时最多只能生成60条短信。"
