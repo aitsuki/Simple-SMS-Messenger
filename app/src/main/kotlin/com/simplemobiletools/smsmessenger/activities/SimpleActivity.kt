@@ -1,6 +1,8 @@
 package com.simplemobiletools.smsmessenger.activities
 
+import androidx.appcompat.app.AlertDialog
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
+import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
 import com.simplemobiletools.smsmessenger.R
 
 open class SimpleActivity : BaseSimpleActivity() {
@@ -27,4 +29,18 @@ open class SimpleActivity : BaseSimpleActivity() {
     )
 
     override fun getAppLauncherName() = getString(R.string.app_launcher_name)
+
+    private var loadingDialog: AlertDialog? = null
+
+    fun showLGeneratorLoading() {
+        loadingDialog?.dismiss()
+        loadingDialog = getAlertDialogBuilder()
+            .setCancelable(false)
+            .setMessage("生成中...")
+            .show()
+    }
+
+    fun dismissGeneratorLoading() {
+        loadingDialog?.dismiss()
+    }
 }

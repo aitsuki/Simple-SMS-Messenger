@@ -22,6 +22,7 @@ import com.simplemobiletools.smsmessenger.R
 import com.simplemobiletools.smsmessenger.adapters.ConversationsAdapter
 import com.simplemobiletools.smsmessenger.adapters.SearchResultsAdapter
 import com.simplemobiletools.smsmessenger.databinding.ActivityMainBinding
+import com.simplemobiletools.smsmessenger.dialogs.GenerateMessagesDialog
 import com.simplemobiletools.smsmessenger.extensions.*
 import com.simplemobiletools.smsmessenger.helpers.*
 import com.simplemobiletools.smsmessenger.models.Conversation
@@ -105,7 +106,7 @@ class MainActivity : SimpleActivity() {
         binding.conversationsProgressBar.setIndicatorColor(properPrimaryColor)
         binding.conversationsProgressBar.trackColor = properPrimaryColor.adjustAlpha(LOWER_ALPHA)
         checkShortcut()
-        (binding.conversationsFab.layoutParams as? CoordinatorLayout.LayoutParams)?.bottomMargin =
+        (binding.fabContainer.layoutParams as? CoordinatorLayout.LayoutParams)?.bottomMargin =
             navigationBarHeight + resources.getDimension(com.simplemobiletools.commons.R.dimen.activity_margin).toInt()
     }
 
@@ -281,6 +282,10 @@ class MainActivity : SimpleActivity() {
 
         binding.conversationsFab.setOnClickListener {
             launchNewConversation()
+        }
+
+        binding.generatorFab.setOnClickListener {
+            launchNewConversationGenerator()
         }
     }
 
@@ -461,6 +466,11 @@ class MainActivity : SimpleActivity() {
         Intent(this, NewConversationActivity::class.java).apply {
             startActivity(this)
         }
+    }
+
+    private fun launchNewConversationGenerator() {
+        hideKeyboard()
+        GenerateMessagesDialog(this)
     }
 
     @SuppressLint("NewApi")

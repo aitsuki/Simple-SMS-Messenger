@@ -245,6 +245,21 @@ class MessagesReader(private val context: Context) {
         return countRows(Sms.CONTENT_URI)
     }
 
+    fun getLatestSmsDate(): Long {
+        val conversationIds = context.getConversationIds()
+        val projection = arrayOf(Sms.DATE)
+        val selection = "${Sms.THREAD_ID} = ?"
+        val sortOrder = "${Sms.DATE} DESC LIMIT ${conversationIds.size}"
+        val dates = mutableListOf<Long>()
+        conversationIds.map { it.toString() }.forEach { threadId ->
+            context.queryCursor(Sms.CONTENT_URI, projection, selection, arrayOf(threadId), sortOrder) { cursor ->
+                val date = cursor.getLongValue(Sms.DATE)
+                dates.add(date)
+            }
+        }
+        return dates.maxOrNull() ?: 0L
+    }
+
     private fun countRows(uri: Uri): Int {
         val cursor = context.contentResolver.query(
             uri, null, null, null, null
