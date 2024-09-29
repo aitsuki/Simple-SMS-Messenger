@@ -19,27 +19,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="选择需要生成的短信数量"
+            android:text="请输入需要生成的短信数量"
             tools:ignore="HardcodedText" />
 
-        <com.simplemobiletools.commons.views.MyTextView
-            android:id="@+id/count_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="16dp"
-            android:text="10"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
-        <com.simplemobiletools.commons.views.MySeekBar
-            android:id="@+id/seekbar"
+        <com.simplemobiletools.commons.views.MyEditText
+            android:id="@+id/count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:max="1000"
-            android:progress="10" />
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:inputType="number" />
 
         <com.simplemobiletools.commons.views.MyTextView
             android:layout_width="wrap_content"

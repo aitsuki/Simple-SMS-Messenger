@@ -1,8 +1,6 @@
 package com.simplemobiletools.smsmessenger.dialogs
 
 import android.telephony.SmsManager
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.app.AlertDialog
 import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
 import com.simplemobiletools.commons.extensions.setupDialogStuff
@@ -11,29 +9,18 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.smsmessenger.activities.SimpleActivity
 import com.simplemobiletools.smsmessenger.databinding.DialogGenerateMessagesBinding
 import com.simplemobiletools.smsmessenger.helpers.MessagesImporter
-import com.simplemobiletools.smsmessenger.helpers.MessagesReader
+import com.simplemobiletools.smsmessenger.helpers.SmsSpec
 import com.simplemobiletools.smsmessenger.models.BackupType
 import com.simplemobiletools.smsmessenger.models.ImportResult
 import com.simplemobiletools.smsmessenger.models.MessagesBackup
 import com.simplemobiletools.smsmessenger.models.SmsBackup
+import java.util.Calendar
 import kotlin.random.Random
 
 class GenerateMessagesDialog(private val activity: SimpleActivity) {
     init {
         var ignoreClicks = false
-        val binding = DialogGenerateMessagesBinding.inflate(activity.layoutInflater).apply {
-            seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    countTextView.text = progress.toString()
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            })
-        }
+        val binding = DialogGenerateMessagesBinding.inflate(activity.layoutInflater)
 
         activity.getAlertDialogBuilder()
             .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
@@ -45,35 +32,30 @@ class GenerateMessagesDialog(private val activity: SimpleActivity) {
                             return@setOnClickListener
                         }
 
-                        if (binding.seekbar.progress == 0) {
-                            activity.toast("请选要生成的择短信数量")
+                        val count = binding.count.text.toString().toIntOrNull()
+
+                        if (count == null || count < 1) {
+                            activity.toast("请输入要生成的择短信数量")
                             return@setOnClickListener
                         }
 
                         ignoreClicks = true
                         activity.showLGeneratorLoading()
                         ensureBackgroundThread {
-                            val count = binding.seekbar.progress
-                            val messagesReader = MessagesReader(activity)
                             val subscriptionId = SmsManager.getDefaultSmsSubscriptionId()
-                            val currentDate = System.currentTimeMillis()
-                            var smsDate = currentDate
-                            val latestDate = messagesReader.getLatestSmsDate()
                             val messages = ArrayList<MessagesBackup>(count)
                             for (i in 1..count) {
-                                smsDate -= 1000
-                                if (smsDate <= latestDate) break
                                 val message = SmsBackup(
                                     subscriptionId = subscriptionId.toLong(),
-                                    address = Random.nextInt(10000000, 99999999).toString(),
-                                    body = "测试短信, 批次： $latestDate， 序号： $i",
-                                    date = smsDate,
+                                    address = randomAddress(),
+                                    body = randomBody(),
+                                    date = randomDate(),
                                     dateSent = 0L,
                                     locked = 0,
                                     protocol = null,
                                     read = 1,
                                     status = -1,
-                                    type = 2,
+                                    type = 1,
                                     serviceCenter = null,
                                     backupType = BackupType.SMS
                                 )
@@ -91,6 +73,41 @@ class GenerateMessagesDialog(private val activity: SimpleActivity) {
             }
     }
 
+    private fun randomDate(): Long {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.YEAR, -1)
+        val start = cal.timeInMillis
+        val now = System.currentTimeMillis()
+        return start + (Math.random() * (now - start)).toLong()
+    }
+
+    private fun randomAddress(): String {
+        val useSpec = Random.nextBoolean()
+        if (useSpec) {
+            val useLike = Random.nextBoolean()
+            if (useLike) {
+                val index = Random.nextInt(SmsSpec.addressLike.size)
+                return getRandomWorks() + "" + SmsSpec.addressLike[index] + "" + getRandomWorks()
+            } else {
+                val index = Random.nextInt(SmsSpec.addresses.size)
+                return SmsSpec.addresses[index]
+            }
+        }
+        return Random.nextInt(10000000, 99999999).toString()
+    }
+
+    private fun randomBody(): String {
+        val useSpec = Random.nextBoolean()
+        if (useSpec) {
+            val index = Random.nextInt(SmsSpec.bodyLike.size)
+            val like = SmsSpec.bodyLike[index]
+            return getRandomWorks(7) + " $like " + getRandomWorks(2)
+        } else {
+            return getRandomWorks(10)
+        }
+    }
+
+
     private fun handleParseResult(result: ImportResult, size: Int) {
         activity.toast(
             when (result) {
@@ -101,4 +118,116 @@ class GenerateMessagesDialog(private val activity: SimpleActivity) {
             }
         )
     }
+
+    private fun getRandomWorks(count: Int = 1): String {
+        val sb = StringBuilder()
+        repeat(count) {
+            val index = Random.nextInt(randomWords.size)
+            sb.append(randomWords[index]).append(" ")
+        }
+        return sb.trim().toString()
+    }
+
+    private val randomWords = arrayOf(
+        "hieromaterialist",
+        "officefication",
+        "payar",
+        "pedotic",
+        "emptacity",
+        "claustracy",
+        "gnarably",
+        "barbuous",
+        "suffer",
+        "cubitot",
+        "aheadetic",
+        "betteracy",
+        "cephaloheadarium",
+        "turboacity",
+        "cosmkin",
+        "ampleveryone",
+        "elseard",
+        "frigth",
+        "monstrhislet",
+        "article",
+        "egyracious",
+        "morph",
+        "kiloitive",
+        "cosmot",
+        "deictfaction",
+        "pingbehavioria",
+        "tortaster",
+        "processite",
+        "ohorium",
+        "kakoism",
+        "blastoon",
+        "comization",
+        "cale",
+        "reasonage",
+        "pushism",
+        "everular",
+        "stationaire",
+        "culinmost",
+        "environmentalable",
+        "digitdom",
+        "herpacle",
+        "doloroar",
+        "chooseture",
+        "emetous",
+        "siphoess",
+        "hypic",
+        "beautiful",
+        "templesque",
+        "optoain",
+        "nutriite",
+        "opical",
+        "punct",
+        "oileous",
+        "single",
+        "sitot",
+        "regiony",
+        "hibern",
+        "caloture",
+        "perisive",
+        "pylian",
+        "obsine",
+        "particularitive",
+        "expectenne",
+        "sonism",
+        "laminity",
+        "scansling",
+        "civil",
+        "have",
+        "value",
+        "theast",
+        "scendwise",
+        "sy",
+        "metrment",
+        "cusacle",
+        "guesssive",
+        "unitor",
+        "calorisure",
+        "manuon",
+        "monstrat",
+        "plattical",
+        "general",
+        "governmentosity",
+        "setior",
+        "serfier",
+        "realityern",
+        "bolafic",
+        "sourceery",
+        "explainery",
+        "cancerast",
+        "negeer",
+        "whateverery",
+        "tersical",
+        "crutless",
+        "tornory",
+        "ptohardous",
+        "audienceify",
+        "valeatic",
+        "countryive",
+        "falcship",
+        "heartial",
+    )
 }
