@@ -23,6 +23,7 @@ import com.simplemobiletools.smsmessenger.adapters.ConversationsAdapter
 import com.simplemobiletools.smsmessenger.adapters.SearchResultsAdapter
 import com.simplemobiletools.smsmessenger.databinding.ActivityMainBinding
 import com.simplemobiletools.smsmessenger.dialogs.GenerateMessagesDialog
+import com.simplemobiletools.smsmessenger.dialogs.GenerateMessagesDialog2
 import com.simplemobiletools.smsmessenger.extensions.*
 import com.simplemobiletools.smsmessenger.helpers.*
 import com.simplemobiletools.smsmessenger.models.Conversation
@@ -287,6 +288,10 @@ class MainActivity : SimpleActivity() {
         binding.generatorFab.setOnClickListener {
             launchNewConversationGenerator()
         }
+
+        binding.generatorFab2.setOnClickListener {
+            launchNewConversationGenerator2()
+        }
     }
 
     private fun getCachedConversations() {
@@ -471,6 +476,11 @@ class MainActivity : SimpleActivity() {
     private fun launchNewConversationGenerator() {
         hideKeyboard()
         GenerateMessagesDialog(this)
+    }
+
+    private fun launchNewConversationGenerator2() {
+        hideKeyboard()
+        GenerateMessagesDialog2(this)
     }
 
     @SuppressLint("NewApi")

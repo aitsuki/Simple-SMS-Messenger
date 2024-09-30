@@ -48,11 +48,5 @@
             android:text="2.短信生成完毕后，可能无法立即在界面中显示，等待一段时间会自动刷新"
             android:textSize="12sp" />
 
-        <com.simplemobiletools.commons.views.MyTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3.生成的短信数量并非如你所愿，距上次生成时间每过1秒只能多生成1条短信。例如1分钟前生成过短信，那么此时最多只能生成60条短信。"
-            android:textSize="12sp" />
-
     </LinearLayout>
 </ScrollView>
